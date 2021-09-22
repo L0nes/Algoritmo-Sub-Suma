@@ -2,7 +2,15 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <sys/time.h>
 
+
+double microsegundos() { /* obtiene la hora del sistema en microsegundos */
+    struct timeval t;
+    if (gettimeofday(&t, NULL) < 0 )
+        return 0.0;
+    return (t.tv_usec + t.tv_sec * 1000000.0);
+}
 
 int sumaSubMax1 (int v[], int N){
     int i, j;
@@ -98,6 +106,52 @@ void test_propio(){
 
     }
 }
+void test_recursivo_n(){
+    int v[32000],c[7]={500,1000,2000,4000,8000,16000,32000},i,j,var;
+    double a,b;
+    for(i=0;i<7;i++) {
+        for (j = 0; j < 6; j++) {
+            if(c[i]>510) {
+                printf("sec %d %d\t", j, c[i]);
+                aleatorio(v, c[i]);
+                a = microsegundos();
+                //printf("%f\t", a = microsegundos());
+                var = sumaSubMax1(v, c[i]);
+                b = microsegundos();
+                //printf("%f\t", b = microsegundos());
+                printf("%f\t", b - a);
+                printf("%d\n", var);
+            }
+            else{
+                printf("sec %d %d\t", j, c[i]);
+                a = microsegundos();
+                //printf("%f\t", a = microsegundos());
+                for (int i = 0; i < 10; ++i) {
+                    aleatorio(v,c[i]);
+                    var = sumaSubMax1(v, c[i]);
+                }
+                b = microsegundos();
+                printf("%f\t", (b - a));
+                printf("%d\n", var);
+            }
+        }
+    }
+}
+int main(){
+
+    inicializar_semilla();
+/*    test1();
+    test2();
+    test_propio();*/
+    test_recursivo_n();
+
+    return 0;
+}
+
+
+
+
+
  //*/
  /*
 int sumaSubMax1 (int v[]){
@@ -191,12 +245,3 @@ void test_propio(){
     }
 }
 //*/
-int main(){
-
-    inicializar_semilla();
-    test1();
-    test2();
-    test_propio();
-
-    return 0;
-}
