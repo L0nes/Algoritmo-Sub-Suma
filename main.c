@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
 #include <sys/time.h>
 
 
@@ -119,7 +120,9 @@ void test_recursivo_n(){
                 var = sumaSubMax1(v, c[i]);
                 b = microsegundos();
                 //printf("%f\t", b = microsegundos());
-                printf("%f\n", b - a);
+                printf("%f %f\t", b - a, (b - a)/((double)c[i]^1.8));
+                printf("\t");
+                
             }
             else{
                 printf("sec %d %d\t", j, c[i]);
@@ -138,6 +141,8 @@ void test_recursivo_n(){
                 b=microsegundos();
                 d=d-a+b;
                 printf("%f \n ", d/100);
+                
+                
             }
         }
     }
