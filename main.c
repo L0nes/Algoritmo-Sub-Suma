@@ -50,7 +50,7 @@ void aleatorio(int v[], int N){
     for (i = 0; i < N; i++){
         v[i] = (rand() % m) - N;
     }
-    printf("\n");
+    //printf("\n");
 }
 
 void listar_vector(int v[], int N){
@@ -107,10 +107,10 @@ void test_propio(){
     }
 }
 void test_recursivo_n(){
-    int v[32000],c[7]={500,1000,2000,4000,8000,16000,32000},i,j,var;
-    double a,b;
-    for(i=0;i<7;i++) {
-        for (j = 0; j < 6; j++) {
+    int v[32000],c[7]={500,1000,2000,4000,8000,16000,32000},i,j,var,z,w;
+    double a,b,d;
+    for(j=0;j<6;j++) {
+        for (i = 0; i < 7; i++) {
             if(c[i]>510) {
                 printf("sec %d %d\t", j, c[i]);
                 aleatorio(v, c[i]);
@@ -119,20 +119,25 @@ void test_recursivo_n(){
                 var = sumaSubMax1(v, c[i]);
                 b = microsegundos();
                 //printf("%f\t", b = microsegundos());
-                printf("%f\t", b - a);
-                printf("%d\n", var);
+                printf("%f\n", b - a);
             }
             else{
                 printf("sec %d %d\t", j, c[i]);
                 a = microsegundos();
                 //printf("%f\t", a = microsegundos());
-                for (int i = 0; i < 10; ++i) {
+                for (int z = 0; z < 100; z++) {
                     aleatorio(v,c[i]);
                     var = sumaSubMax1(v, c[i]);
                 }
                 b = microsegundos();
-                printf("%f\t", (b - a));
-                printf("%d\n", var);
+                d=b-a;
+                a=microsegundos();
+                for(w=0;w<100;w++){
+                    aleatorio(v,c[i]);
+                }
+                b=microsegundos();
+                d=d-a+b;
+                printf("%f \n ", d/100);
             }
         }
     }
