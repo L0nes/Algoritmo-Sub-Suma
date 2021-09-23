@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
 #include <sys/time.h>
 
 
@@ -40,7 +41,9 @@ int sumaSubMax2 (int v[], int N){
         }
     }
     return sumaMax;
-}void inicializar_semilla(){
+}
+
+void inicializar_semilla(){
     srand(time(NULL));
 }
 
@@ -106,9 +109,11 @@ void test_propio(){
 
     }
 }
-void test_recursivo_n(){
-    int v[32000],c[7]={500,1000,2000,4000,8000,16000,32000},i,j,var,z,w;
-    double a,b,d;
+
+void test_recursivo_n1(){
+    int v[32000],c[7]={500,1000,2000,4000,8000,16000,32000},i,j,var,w;
+    double a,b,d,f_c;
+    printf("\n\n%8s%8s%8s%16s%16s%16s\n\n", "n", "", "t(n)", "t(n)/n^1.8", "t(n)/n^2", "t(n)/n^2.2");
     for(j=0;j<6;j++) {
         for (i = 0; i < 7; i++) {
             if(c[i]>510) {
@@ -119,10 +124,11 @@ void test_recursivo_n(){
                 var = sumaSubMax1(v, c[i]);
                 b = microsegundos();
                 //printf("%f\t", b = microsegundos());
-                printf("%f\n", b - a);
-            }
+                f_c=1.0*c[i];
+                printf("%f\t%f\t%f\t%f\n", b - a, (b-a)/pow(f_c,1.8), (b-a)/pow(f_c,2), (b-a)/pow(f_c,2.2));
+            }           
             else{
-                printf("sec %d %d\t", j, c[i]);
+                printf("sec %d %d %s\t", j, c[i], "(*)");
                 a = microsegundos();
                 //printf("%f\t", a = microsegundos());
                 for (int z = 0; z < 100; z++) {
@@ -136,19 +142,49 @@ void test_recursivo_n(){
                     aleatorio(v,c[i]);
                 }
                 b=microsegundos();
-                d=d-a+b;
-                printf("%f \n ", d/100);
+                d=(d-a+b)/100;
+                f_c=1.0*c[i];
+                printf("%f\t%f\t%f\t%f\n", d, d/pow(f_c,1.8), d/pow(f_c,2), d/pow(f_c,2.2));
             }
         }
     }
 }
+
+void test_recursivo_n2(){
+    int v[32000],c[7]={500,1000,2000,4000,8000,16000,32000},i,j,var, w;
+    double a,b,d,f_c;
+    printf("\n\n%8s%16s%16s%16s%16s\n\n", "n", "t(n)", "t(n)/n^0.8", "t(n)/n^1", "t(n)/n^1.2");
+    for(j=0;j<6;j++) {
+        for (i = 0; i < 7; i++) { 
+                printf("sec %d %d %s\t", j, c[i], "(*)");
+                a = microsegundos();
+                //printf("%f\t", a = microsegundos());
+                for (int z = 0; z < 100; z++) {
+                    aleatorio(v,c[i]);
+                    var = sumaSubMax2(v, c[i]);
+                }
+                b = microsegundos();
+                d=b-a;
+                a=microsegundos();
+                for(w=0;w<100;w++){
+                    aleatorio(v,c[i]);
+                }
+                b=microsegundos();
+                d=(d-a+b)/100;
+                f_c=1.0*c[i];
+                printf("%f\t%f\t%f\t%f\n", d, d/pow(f_c,0.8), d/pow(f_c,1), d/pow(f_c,1.2));
+        }
+    }
+}
+
 int main(){
 
     inicializar_semilla();
 /*    test1();
     test2();
     test_propio();*/
-    test_recursivo_n();
+    test_recursivo_n1();
+    test_recursivo_n2();
 
     return 0;
 }
@@ -250,3 +286,5 @@ void test_propio(){
     }
 }
 //*/
+
+
